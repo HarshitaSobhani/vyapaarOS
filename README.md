@@ -143,7 +143,7 @@ Production: **Vercel (Next.js) → Railway (FastAPI) → Railway (PostgreSQL)**.
 
 **Vercel (frontend)**
 1. Import the GitHub repo, **Root Directory** `frontend`.
-2. Environment variable `NEXT_PUBLIC_API_URL` = the Railway API URL, e.g. `https://api-production-4dd4f.up.railway.app` (no trailing slash). Only the public API URL goes here.
+2. Environment variable `NEXT_PUBLIC_API_URL` = your Railway API URL, e.g. `https://<your-service>.up.railway.app` (no trailing slash). Only the public API URL goes here.
 3. After the first deploy, put the Vercel URL into `CORS_ORIGINS` on Railway. Preview deployments use different URLs and must be added there too.
 
 Auth is a bearer token in the `Authorization` header (kept in `localStorage`), so it works across `vercel.app` and `up.railway.app` without third-party cookies.

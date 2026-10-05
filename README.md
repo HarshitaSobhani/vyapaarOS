@@ -159,8 +159,8 @@ Frontend: `NEXT_PUBLIC_API_URL` (public), `API_URL` (optional, server-side).
 - **No live Tally sync.** The importer is built on an `AccountingSource` interface so a Tally adapter can be added later ([docs/integrations/tally.md](docs/integrations/tally.md)); only CSV is implemented.
 - **No OCR.** PDF import reads text PDFs only; scanned images are rejected.
 - Keyword-based question routing in the assistant, not language understanding.
-- No login rate limiting, no refresh tokens or password reset, single organisation. The token is stored in `localStorage`.
+- Login throttling is in-memory and per process (5 failed attempts per IP and email, then a 5-minute cooldown); there is no distributed rate limiting. No refresh tokens or password reset, single organisation. The token is stored in `localStorage`.
 - Customer-level payment allocation (oldest invoice first) is available through the API only, with no UI.
 
 ## Future work
-Tally adapter, WhatsApp Business API provider, payment links, background workers for large imports, login rate limiting.
+Tally adapter, WhatsApp Business API provider, payment links, background workers for large imports.

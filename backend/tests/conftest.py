@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session  # noqa: E402
 
 from app.api import deps  # noqa: E402
 from app.core.db import SessionLocal, engine, get_db  # noqa: E402
+from app.core.rate_limit import login_throttle  # noqa: E402
 from app.main import app  # noqa: E402
 from app.models import Base  # noqa: E402
 from app.seed import seed  # noqa: E402
@@ -57,3 +58,8 @@ def client(db: Session) -> Iterator[TestClient]:
 def auth(client: TestClient) -> dict[str, str]:
     res = client.post("/api/auth/login", json={"email": "demo@vyapaaros.in", "password": "test-password-123"})
     return {"Authorization": f"Bearer {res.json()['access_token']}"}
+
+
+@pytest.fixture(autouse=True)
+def _reset_login_throttle() -> None:
+    login_throttle.reset()

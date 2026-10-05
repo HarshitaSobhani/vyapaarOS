@@ -1,5 +1,8 @@
 # Screenshots
 
+Already added: `ai-assistant.png`, `inventory.png`, `invoices.png` (drafts list), `customers.png`, `settings.png`.
+Still needed: `dashboard.png`, `collections.png`, `invoice-review.png`.
+
 Add these files here (PNG, about 1400px wide). The README references them by these exact names:
 
 | File | Page |

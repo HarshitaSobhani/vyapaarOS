@@ -25,18 +25,23 @@ _Add `docs/screenshots/dashboard.png`_
 _Add `docs/screenshots/collections.png`_
 
 ### Inventory Intelligence
-<!-- ![Inventory](docs/screenshots/inventory.png) -->
-_Add `docs/screenshots/inventory.png`_
+![Inventory intelligence](docs/screenshots/inventory.png)
 
 ### Invoice Review
-<!-- ![Invoice review](docs/screenshots/invoice-review.png) -->
-_Add `docs/screenshots/invoice-review.png`_
+![Invoices awaiting review](docs/screenshots/invoices.png)
+
+Imported and manual invoices stay as drafts until approved. _The review dialog screenshot (`docs/screenshots/invoice-review.png`) is still to be added._
 
 ### AI Assistant
-<!-- ![AI Assistant](docs/screenshots/ai-assistant.png) -->
-_Add `docs/screenshots/ai-assistant.png`_
+![AI Assistant](docs/screenshots/ai-assistant.png)
 
-See [docs/screenshots/README.md](docs/screenshots/README.md).
+### Customers
+![Customers](docs/screenshots/customers.png)
+
+### Settings
+![Settings and CSV import](docs/screenshots/settings.png)
+
+Still to add: `dashboard.png` and `collections.png` (see [docs/screenshots/README.md](docs/screenshots/README.md)).
 
 ## Demo
 [Watch the 90-second demo](#) <!-- REPLACE '#' with the video URL once recorded -->

@@ -1,0 +1,9 @@
+{
+  "invoice_number": "INV-10482",
+  "customer": "ABC Electricals",
+  "invoice_date": "2026-10-04",
+  "items": [
+    { "sku": "LED-B12", "quantity": 50, "unit_price": 120 },
+    { "sku": "MCB-S16", "quantity": 20, "unit_price": 180 }
+  ]
+}

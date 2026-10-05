@@ -1,0 +1,53 @@
+# Local development stack. Production runs on Vercel (frontend) + Railway (API + PostgreSQL); see README.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: vyapaaros
+      POSTGRES_PASSWORD: vyapaaros
+      POSTGRES_DB: vyapaaros
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vyapaaros"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://vyapaaros:vyapaaros@db:5432/vyapaaros
+      SECRET_KEY: ${SECRET_KEY:-local-dev-secret-change-me}
+      CORS_ORIGINS: http://localhost:3000
+      ENVIRONMENT: development
+      DEMO_USER_PASSWORD: ${DEMO_USER_PASSWORD:?Set DEMO_USER_PASSWORD in .env}
+      AI_PROVIDER: ${AI_PROVIDER:-mock}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "8000:8000"
+
+  # Optional: `docker compose --profile full up`. Otherwise run the frontend with `npm run dev`.
+  frontend:
+    profiles: ["full"]
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm install --no-audit --no-fund && npm run dev -- -H 0.0.0.0"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  frontend_node_modules:

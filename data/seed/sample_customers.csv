@@ -1,0 +1,5 @@
+name,company_name,phone,email,credit_limit,payment_terms_days
+Ramesh Jain,Jain Electrical Mart,9820012345,accounts@jainelectricalmart.in,150000,30
+Neha Kapoor,Kapoor Lighting Studio,9811098765,neha@kapoorlighting.in,100000,30
+Bad Row,Broken Email Traders,9810000000,not-an-email,50000,30
+Dup Row,ABC Electricals,9820011001,,100000,30

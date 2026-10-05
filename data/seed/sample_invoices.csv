@@ -1,0 +1,6 @@
+invoice_number,customer,invoice_date,due_date,sku,quantity,unit_price
+CSV-2001,Metro Hardware,2026-10-03,,LED-B12,40,120
+CSV-2001,Metro Hardware,2026-10-03,,WIR-F15,6,1480
+CSV-2002,Patel Traders,2026-10-04,,SWI-H6A,100,
+CSV-2003,Patel Traders,2026-10-04,,NOT-A-SKU,10,50
+CSV-2004,Unknown Customer Ltd,2026-10-04,,LED-B12,5,120

@@ -1,0 +1,4 @@
+sku,name,category,unit,purchase_price,selling_price,gst_rate,reorder_level,reorder_quantity,supplier_name,opening_stock
+SWI-LGD,Legrand Modular Switch 6A,Switches & Sockets,pcs,52,95,18,100,200,Legrand India,300
+LED-D07,LED Downlight 7W,Lighting,pcs,95,170,12,60,120,Philips Lighting India,150
+LED-B12,LED Bulb 12W,Lighting,pcs,62,120,12,100,200,Philips Lighting India,10

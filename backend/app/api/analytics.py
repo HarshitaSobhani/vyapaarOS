@@ -12,11 +12,9 @@ from app.schemas.analytics import (
     DashboardOut,
     InventoryOut,
     ProductRiskOut,
-    PurchaseOrderLine,
-    PurchaseOrderSuggestion,
 )
 from app.services.dashboard import build_dashboard
-from app.services.inventory_service import ProductRisk, compute_risks, summarize
+from app.services.inventory_service import ProductRisk, compute_risks, purchase_order_suggestions, summarize
 from app.services.receivables import CustomerReceivable
 from app.services.receivables_service import build_snapshot
 
@@ -111,19 +109,10 @@ def _risks(db: Session, today: date) -> list[ProductRisk]:
 def inventory(db: DB, _: CurrentUser, today: Today) -> InventoryOut:
     risks = _risks(db, today)
     s = summarize(risks)
-    orders = [
-        PurchaseOrderSuggestion(
-            supplier_name=supplier,
-            lines=[PurchaseOrderLine(product_id=r.product.id, name=r.product.name, sku=r.product.sku,
-                                     quantity=r.assessment.recommended_order_quantity, unit=r.product.unit,
-                                     estimated_cost=r.product.purchase_price * r.assessment.recommended_order_quantity)
-                   for r in lines],
-            estimated_total=sum((r.product.purchase_price * r.assessment.recommended_order_quantity for r in lines), start=0))  # type: ignore[arg-type]
-        for supplier, lines in sorted(s.purchase_orders.items())]
     return InventoryOut(
         total_products=s.total_products, low_stock=s.low_stock, critical=s.critical, healthy=s.healthy,
         health_pct=s.health_pct, inventory_value=s.inventory_value, stockout_risk_10d=s.stockout_risk_10d,
-        purchase_orders=orders, risks=[risk_out(r) for r in risks])
+        purchase_orders=purchase_order_suggestions(s), risks=[risk_out(r) for r in risks])
 
 
 @router.get("/inventory/risks", response_model=list[ProductRiskOut])

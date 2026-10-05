@@ -85,7 +85,7 @@ def reject_invoice(invoice_id: UUID, body: RejectIn, db: DB, _: Approver, today:
 
 
 @router.post("/payments", response_model=PaymentOut, status_code=201)
-def record_payment(body: InvoicePaymentIn, db: DB, _: CurrentUser):  # type: ignore[no-untyped-def]
+def record_payment(body: InvoicePaymentIn, db: DB, _: Approver):  # type: ignore[no-untyped-def]
     return svc.record_payment(db, body.invoice_id, body)
 
 

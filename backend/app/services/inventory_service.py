@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.models import Product
 from app.repositories.inventory import products_with_stock, units_sold_by_product
+from app.schemas.analytics import PurchaseOrderLine, PurchaseOrderSuggestion
 from app.services.inventory import (
     VELOCITY_WINDOW_DAYS,
     StockAssessment,
@@ -73,3 +74,19 @@ def summarize(risks: list[ProductRisk]) -> InventorySummary:
 
 def find_risk(risks: list[ProductRisk], product_id: UUID) -> ProductRisk | None:
     return next((r for r in risks if r.product.id == product_id), None)
+
+
+def purchase_order_suggestions(summary: InventorySummary) -> list[PurchaseOrderSuggestion]:
+    """Products needing an order, grouped by supplier, with estimated cost at purchase price."""
+    out = []
+    for supplier, lines in sorted(summary.purchase_orders.items()):
+        po_lines = [
+            PurchaseOrderLine(
+                product_id=r.product.id, name=r.product.name, sku=r.product.sku,
+                quantity=r.assessment.recommended_order_quantity, unit=r.product.unit,
+                estimated_cost=r.product.purchase_price * r.assessment.recommended_order_quantity)
+            for r in lines]
+        out.append(PurchaseOrderSuggestion(
+            supplier_name=supplier, lines=po_lines,
+            estimated_total=sum((line.estimated_cost for line in po_lines), Decimal(0))))
+    return out

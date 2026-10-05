@@ -90,13 +90,6 @@ class InventoryOut(BaseModel):
     risks: list[ProductRiskOut]
 
 
-class Kpi(BaseModel):
-    label: str
-    value: Money | float
-    kind: str  # currency | percent
-    hint: str | None = None
-
-
 class SalesPoint(BaseModel):
     date: date
     sales: Money

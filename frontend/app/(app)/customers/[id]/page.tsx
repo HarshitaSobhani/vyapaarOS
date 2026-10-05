@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { InvoiceStatusBadge, PriorityBadge } from "@/components/badges";
 import { PageHeader } from "@/components/page-header";
-import { AsyncBoundary } from "@/components/page-state";
+import { AsyncBoundary, EmptyState } from "@/components/page-state";
 import { ReminderDialog } from "@/components/reminder-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -61,6 +61,7 @@ export default function CustomerDetailPage() {
             <Card>
               <CardHeader><CardTitle className="text-sm">Invoices</CardTitle></CardHeader>
               <CardContent className="overflow-x-auto">
+                {data.invoices.length === 0 ? <EmptyState title="No invoices yet" hint="Approved invoices for this customer will appear here." /> : (
                 <Table>
                   <TableHeader><TableRow>
                     <TableHead>Invoice</TableHead><TableHead>Date</TableHead><TableHead>Due</TableHead>
@@ -79,6 +80,7 @@ export default function CustomerDetailPage() {
                     ))}
                   </TableBody>
                 </Table>
+                )}
               </CardContent>
             </Card>
           </div>

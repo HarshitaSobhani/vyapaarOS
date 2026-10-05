@@ -3,14 +3,14 @@ from sqlalchemy import func, select
 
 from app.api.deps import DB, CurrentUser
 from app.core.errors import AppError
-from app.core.security import create_access_token, verify_password
+from app.core.security import create_access_token, hash_password, verify_password
 from app.models import User
 from app.schemas.misc import LoginIn, LoginOut, UserOut
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 # Verified against a throwaway hash so unknown emails take similar time as wrong passwords.
-_DUMMY_HASH = "$2b$12$C6UzMDM.H6dfI/f/IKcEeO5zkPQ0jQ6u2lE3mQ9cZ0gQK3wJ3dJ2e"
+_DUMMY_HASH = hash_password("not-a-real-password")
 
 
 @router.post("/login", response_model=LoginOut)

@@ -1,13 +1,9 @@
-from uuid import UUID
-
 from fastapi import APIRouter
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 
 from app.api.deps import AI, DB, CurrentUser, Today
 from app.core.config import get_settings
 from app.core.errors import AppError, NotFoundError
-from app.models import Customer, Invoice, InvoiceStatus, ReminderLog
+from app.models import Customer, ReminderLog
 from app.schemas.misc import (
     AskIn,
     AskOut,
@@ -19,8 +15,7 @@ from app.schemas.misc import (
     UserOut,
 )
 from app.services import assistant
-from app.services.invoices import paid_amount
-from app.services.receivables import format_inr
+from app.services.reminders import build_reminder_context
 from app.services.whatsapp import get_whatsapp_provider
 
 router = APIRouter(tags=["ai"])
@@ -33,43 +28,15 @@ def ask(body: AskIn, db: DB, _: CurrentUser, ai: AI, today: Today) -> AskOut:
                   fallback_used=result.fallback_used, facts=facts)
 
 
-def _pick_invoice(db: DB, customer_id: UUID, invoice_id: UUID | None, today) -> Invoice:  # type: ignore[no-untyped-def]
-    if invoice_id:
-        inv = db.scalar(select(Invoice).where(Invoice.id == invoice_id, Invoice.customer_id == customer_id)
-                        .options(selectinload(Invoice.payments)))
-        if inv is None:
-            raise NotFoundError("Invoice")
-        return inv
-    rows = db.scalars(select(Invoice).where(
-        Invoice.customer_id == customer_id,
-        Invoice.status.in_((InvoiceStatus.approved, InvoiceStatus.partially_paid)),
-        Invoice.due_date < today).options(selectinload(Invoice.payments)).order_by(Invoice.due_date)).all()
-    if not rows:
-        raise AppError("This customer has no overdue invoices to remind about", 422, "no_overdue_invoice")
-    return rows[0]
-
-
 @router.post("/ai/collection-message", response_model=CollectionMessageOut)
 def collection_message(body: CollectionMessageIn, db: DB, _: CurrentUser, ai: AI, today: Today) -> CollectionMessageOut:
-    customer = db.get(Customer, body.customer_id)
-    if customer is None:
-        raise NotFoundError("Customer")
-    inv = _pick_invoice(db, customer.id, body.invoice_id, today)
-    if inv.status not in (InvoiceStatus.approved, InvoiceStatus.partially_paid):
-        raise AppError("Reminders are only for approved, unpaid invoices", 422, "invalid_invoice")
-    amount = inv.total - paid_amount(inv)
-    if amount <= 0:
-        raise AppError("Invoice is already paid", 422, "invalid_invoice")
-    days = max((today - inv.due_date).days, 0)
-    facts = {"customer_name": customer.name.split()[0], "invoice_number": inv.invoice_number,
-             "amount": amount, "amount_display": format_inr(amount),
-             "due_date": inv.due_date.strftime("%d %b %Y"), "days_overdue": days}
-    result = ai.write_reminder(facts, body.variant)
+    ctx = build_reminder_context(db, body.customer_id, body.invoice_id, today)
+    result = ai.write_reminder(ctx.facts, body.variant)
     return CollectionMessageOut(
-        message=result.text, customer_id=customer.id, customer_name=customer.company_name,
-        phone=customer.phone, invoice_id=inv.id, invoice_number=inv.invoice_number, amount=amount,
-        due_date=inv.due_date, days_overdue=days, provider=result.provider,
-        fallback_used=result.fallback_used)
+        message=result.text, customer_id=ctx.customer.id, customer_name=ctx.customer.company_name,
+        phone=ctx.customer.phone, invoice_id=ctx.invoice.id, invoice_number=ctx.invoice.invoice_number,
+        amount=ctx.amount, due_date=ctx.invoice.due_date, days_overdue=ctx.days_overdue,
+        provider=result.provider, fallback_used=result.fallback_used)
 
 
 @router.post("/ai/collection-message/send", response_model=SendReminderOut)

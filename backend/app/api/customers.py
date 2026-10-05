@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.api.analytics import receivable_out
-from app.api.deps import DB, CurrentUser, Today
+from app.api.deps import DB, Approver, CurrentUser, Today
 from app.models import Customer, Invoice, InvoiceStatus, Payment
 from app.schemas.invoices import CustomerPaymentIn, PaymentOut
 from app.schemas.misc import CustomerDetail, CustomerOut
@@ -56,6 +56,6 @@ def customer_detail(customer_id: UUID, db: DB, _: CurrentUser, today: Today) -> 
 
 
 @router.post("/{customer_id}/payments", response_model=list[PaymentOut], status_code=201)
-def record_customer_payment(customer_id: UUID, body: CustomerPaymentIn, db: DB, _: CurrentUser) -> list[Payment]:
+def record_customer_payment(customer_id: UUID, body: CustomerPaymentIn, db: DB, _: Approver) -> list[Payment]:
     """Allocates the payment to the oldest open invoices first."""
     return invoice_service.allocate_customer_payment(db, customer_id, body)

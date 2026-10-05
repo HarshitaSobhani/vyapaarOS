@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.models import InvoiceStatus
 from app.repositories.receivables import sales_by_day
 from app.schemas.analytics import AgingBucket, AiOperation, DashboardOut, SalesPoint
+from app.services.inventory import STOCKOUT_RISK_DAYS
 from app.services.inventory_service import compute_risks, summarize
 from app.services.invoices import count_by_status
 from app.services.receivables_service import build_snapshot
@@ -32,7 +33,7 @@ def build_dashboard(db: Session, today: date) -> DashboardOut:
                     detail=f"{high} high priority · ₹{snap.summary.total_overdue:,.0f} overdue",
                     href="/collections?priority=High"),
         AiOperation(key="stockout", count=inv.stockout_risk_10d, severity="high" if inv.critical else "medium",
-                    title=f"{inv.stockout_risk_10d} {_plural(inv.stockout_risk_10d, 'product may', 'products may')} stock out within 10 days",
+                    title=f"{inv.stockout_risk_10d} {_plural(inv.stockout_risk_10d, 'product may', 'products may')} stock out within {STOCKOUT_RISK_DAYS} days",
                     detail=f"{inv.critical} critical · {inv.low_stock} low",
                     href="/inventory?status=Critical"),
         AiOperation(key="purchase_orders", count=len(inv.purchase_orders), severity="medium",

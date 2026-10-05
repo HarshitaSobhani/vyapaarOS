@@ -2,7 +2,7 @@
 
 **AI-assisted business operations for Indian distributors and retailers.**
 
-[**Live Demo**](https://vyapaar-os-ivory.vercel.app) · [**GitHub**](https://github.com/HarshitaSobhani/vyapaarOS) · [**Demo Video**](#demo)
+[**Live Demo**](https://vyapaar-os-ivory.vercel.app)
 
 ## Problem
 Small distributors invoice on credit, chase payments by phone and WhatsApp, and reorder stock from memory. The data to do this well already exists in invoices and payments, but nobody has time to turn it into a daily list of what needs attention. VyapaarOS does that, and explains why each item is on the list.
@@ -17,12 +17,10 @@ Small distributors invoice on credit, chase payments by phone and WhatsApp, and 
 ## Screenshots
 
 ### Dashboard
-<!-- ![Dashboard](docs/screenshots/dashboard.png) -->
-_Add `docs/screenshots/dashboard.png`_
+![Dashboard](docs/screenshots/dashboard.png)
 
 ### Collections Intelligence
-<!-- ![Collections](docs/screenshots/collections.png) -->
-_Add `docs/screenshots/collections.png`_
+![Collections](docs/screenshots/collections.png)
 
 ### Inventory Intelligence
 ![Inventory intelligence](docs/screenshots/inventory.png)
@@ -30,7 +28,7 @@ _Add `docs/screenshots/collections.png`_
 ### Invoice Review
 ![Invoices awaiting review](docs/screenshots/invoices.png)
 
-Imported and manual invoices stay as drafts until approved. _The review dialog screenshot (`docs/screenshots/invoice-review.png`) is still to be added._
+Imported and manual invoices stay as drafts until approved; **Review** opens the draft with Approve / Edit / Reject.
 
 ### AI Assistant
 ![AI Assistant](docs/screenshots/ai-assistant.png)
@@ -40,11 +38,6 @@ Imported and manual invoices stay as drafts until approved. _The review dialog s
 
 ### Settings
 ![Settings and CSV import](docs/screenshots/settings.png)
-
-Still to add: `dashboard.png` and `collections.png` (see [docs/screenshots/README.md](docs/screenshots/README.md)).
-
-## Demo
-[Watch the 90-second demo](#) <!-- REPLACE '#' with the video URL once recorded -->
 
 ## Architecture
 ```mermaid

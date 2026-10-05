@@ -1,16 +1,3 @@
 # Screenshots
 
-Already added: `ai-assistant.png`, `inventory.png`, `invoices.png` (drafts list), `customers.png`, `settings.png`.
-Still needed: `dashboard.png`, `collections.png`, `invoice-review.png`.
-
-Add these files here (PNG, about 1400px wide). The README references them by these exact names:
-
-| File | Page |
-|------|------|
-| `dashboard.png` | Dashboard, including the AI Operations card |
-| `collections.png` | Collections: aging chart and priority table |
-| `inventory.png` | Inventory: stock-risk table |
-| `invoice-review.png` | Invoice review dialog showing an imported draft with Approve / Edit / Reject |
-| `ai-assistant.png` | AI Assistant answering a question, with "Facts used" expanded |
-
-After adding them, open `README.md` and uncomment the matching image line under each Screenshots heading.
+Images used by the main README, taken from the deployed app: `dashboard.png`, `collections.png`, `inventory.png`, `invoices.png`, `ai-assistant.png`, `customers.png`, `settings.png`.

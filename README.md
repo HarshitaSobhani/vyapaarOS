@@ -2,7 +2,7 @@
 
 **AI-assisted business operations for Indian distributors and retailers.**
 
-[**Live Deployment**](https://vyapaar-os-ivory.vercel.app)
+[**Try it live**](https://vyapaar-os-ivory.vercel.app)
 
 ## Problem
 Small distributors invoice on credit, chase payments by phone and WhatsApp, and reorder stock from memory. The data to do this well already exists in invoices and payments, but nobody has time to turn it into a daily list of what needs attention. VyapaarOS does that, and explains why each item is on the list.
